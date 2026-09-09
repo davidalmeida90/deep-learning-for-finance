@@ -44,6 +44,30 @@ Classification accuracy on that direction target reads 0.553, which also means n
 twenty day windows on US large caps are up more often than down, so a model that always
 answers "up" scores about the same.
 
+## Baselines, on the same rows
+
+`baselines.py` scores every network against something that costs nothing, on the identical
+windows, rows and date split the networks were scored on.
+
+| target | baseline | corr | network | corr |
+|---|---|---|---|---|
+| 10 day forward vol | persistence, last 10 days | 0.491 | LSTM, mean of 5 seeds | 0.461 |
+| 10 day forward vol | EWMA, decay 0.94 | 0.491 | transformer, mean of 5 seeds | 0.434 |
+| 10 day forward vol | HAR-RV, Corsi 2009 | **0.528** | | |
+| 20 day forward vol per name | trailing 20 day realised vol | **0.513** | CNN on the normalised image | 0.225 |
+
+HAR-RV, four coefficients by least squares, beats the best seed of either network. Trailing
+realised vol, one number per row, carries more than twice the signal the CNN recovers from a
+scale free picture of the same twenty days. Both networks were retrained five times from
+different seeds: LSTM 0.445, 0.464, 0.464, 0.488, 0.446; transformer 0.445, 0.451, 0.449, 0.384, 0.440. Seed by seed the gap between them is inside 0.015
+on three of five, so the two do not separate on a sequence this short.
+
+Reading is the one that matters for a desk. Volatility is forecastable, and on forty daily
+numbers a linear model with the right three features forecasts it better than either network.
+Deep learning earns its cost when the input holds structure a linear model cannot, a cross
+section, an order book, text. Here it did not, and the sections above stand as demonstrations
+of how each architecture reads its input rather than as forecasts to trade.
+
 ## Papers behind sections 3 and 5
 
 Section 3 follows **Jiang, Kelly and Xiu (2023)**, *(Re-)Imag(in)ing Price Trends*, Journal of
@@ -65,6 +89,8 @@ Sections 1, 2 and 4 are standard constructions rather than replications.
 |---|---|
 | `feedforward_lstm_transformer.py` | sections 1, 2 and 4, plus six charts |
 | `cnn_autoencoder.py` | sections 3 and 5, plus four charts |
+| `baselines.py` | persistence, EWMA, HAR-RV, trailing vol, and five seeds per network |
+| `baselines.json` | every number in the baselines table |
 | `results.json` | every number the write up quotes, written by the runs |
 | `figures/` | where both scripts write their charts, and the architecture drawings |
 
@@ -77,6 +103,7 @@ pip install torch yfinance pandas numpy matplotlib
 ```bash
 python feedforward_lstm_transformer.py   # live option chain, then 20 years of SPY
 python cnn_autoencoder.py                # 45 names, 153,000 images, then the cross section
+python baselines.py                      # after both, reads figures/cnn_eval.npz
 ```
 
 Both scripts pull from `yfinance` and cache nothing, so numbers move a little with the data.
@@ -105,7 +132,8 @@ defensible for a static map and transfers to nothing else here.
 Nothing forces the fitted surface to be arbitrage free, so the interpolant can imply a
 negative density in the wings. Desk use needs that constraint added.
 
-Every model trains once from a fixed seed. Section 3 shows exactly what that hides.
+Headline numbers are single runs from a fixed seed. `baselines.py` retrains the LSTM and the
+transformer five times each; feed forward, CNN and autoencoder remain single runs.
 
 ## Licence
 
