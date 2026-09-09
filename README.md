@@ -108,7 +108,9 @@ python baselines.py                      # after both, reads figures/cnn_eval.np
 
 Both scripts pull from `yfinance` and cache nothing, so numbers move a little with the data.
 Training uses CUDA when it is available and falls back to CPU on its own. Section 1 quotes a
-live chain, so it changes every day the market opens.
+live option chain, so it changes every day the market opens, and outside US market hours
+Yahoo returns the chain with zero bids: the script then skips section 1 with a message and
+runs sections 2 and 3, which only need daily closes. Run it during US hours for the surface.
 
 Runtime on a laptop GPU is about a minute for the first script and about seven minutes for
 the second, most of it spent rendering 153,000 images rather than training.
