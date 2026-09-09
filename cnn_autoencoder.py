@@ -26,8 +26,9 @@ import matplotlib.pyplot as plt
 
 warnings.filterwarnings("ignore")
 
-OUT = Path(__file__).parent / "saida_dl"
-OUT.mkdir(exist_ok=True)
+# Charts land in figures/, which is the folder shipped with this repository, so a
+# fresh run reproduces exactly what you see here.
+OUT = Path(__file__).parent / "figures"; OUT.mkdir(exist_ok=True)
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(0)
 np.random.seed(0)
@@ -56,7 +57,7 @@ def save(f, name):
     print("  saved", name)
 
 
-CAMINHO = OUT / "facts.json"
+CAMINHO = Path(__file__).parent / "results.json"
 FACTS = json.loads(CAMINHO.read_text()) if CAMINHO.exists() else {}
 
 # Universe. Liquid, long history, and spread across sectors so the cross section the

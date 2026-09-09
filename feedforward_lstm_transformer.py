@@ -15,7 +15,9 @@ import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore")
 
-OUT = Path(__file__).parent / "saida_dl"; OUT.mkdir(exist_ok=True)
+# Charts land in figures/, which is the folder shipped with this repository, so a
+# fresh run reproduces exactly what you see here.
+OUT = Path(__file__).parent / "figures"; OUT.mkdir(exist_ok=True)
 DEV = "cuda" if torch.cuda.is_available() else "cpu"
 torch.manual_seed(0); np.random.seed(0)
 INK, GRID_L, GRID_D = "#12151c", "#e6e8ee", "#2a3040"
@@ -113,7 +115,7 @@ ax.set_title("Training and held out error stay together", color=tc, fontsize=12,
 ax.legend(frameon=False, fontsize=9)
 np.save(OUT / "ffn_hist.npy", H)
 save(f, "ffn_loss.png")
-json.dump(FACTS, open(OUT / "facts.json", "w"), indent=1)
+json.dump(FACTS, open(Path(__file__).parent / "results.json", "w"), indent=1)
 print("stage 1 done")
 
 # ------------------------------------------------------- 2. recurrent (LSTM)
@@ -206,5 +208,5 @@ ax.set_xlabel("realised vol %", color=tc); ax.set_ylabel("predicted vol %", colo
 ax.set_title(f"Out of sample fit, correlation {ct:.2f}", color=tc, fontsize=12, loc="left")
 save(f, "tr_scatter.png")
 
-json.dump(FACTS, open(OUT / "facts.json", "w"), indent=1)
+json.dump(FACTS, open(Path(__file__).parent / "results.json", "w"), indent=1)
 print("\nFACTS:", json.dumps(FACTS, indent=1))

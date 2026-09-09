@@ -28,8 +28,9 @@ Out of sample throughout, split by date except where noted.
 | Transformer | correlation 0.446, RMSE 7.81 vol points | same windows as the LSTM |
 | Autoencoder | 35.0% of variance through 3 units | 3,440 days, worst rebuild 9 April 2025 |
 
-Every figure above is written to `results.json` by the run that produced it, so a fresh run
-can be compared against this one without reading the charts.
+Every figure above is written to `results.json` by the run that produced it, and charts land
+in `figures/`, overwriting the ones shipped here. A fresh run can be compared against this one
+without reading the charts.
 
 ### One result that does not hold
 
@@ -65,7 +66,7 @@ Sections 1, 2 and 4 are standard constructions rather than replications.
 | `feedforward_lstm_transformer.py` | sections 1, 2 and 4, plus six charts |
 | `cnn_autoencoder.py` | sections 3 and 5, plus four charts |
 | `results.json` | every number the write up quotes, written by the runs |
-| `figures/` | output of both scripts, and the architecture drawings |
+| `figures/` | where both scripts write their charts, and the architecture drawings |
 
 ## Running it
 
