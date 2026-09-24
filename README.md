@@ -1,5 +1,7 @@
 # Deep learning for finance
 
+> **Moved.** This project now lives in [machine-learning-for-finance/deep-learning](https://github.com/davidalmeida90/machine-learning-for-finance/tree/main/deep-learning), with its history, next to the machine learning models. This copy is archived and stays as it was.
+
 Five architectures, each pointed at the job it was invented for, on real market data pulled
 from one free source. Two scripts run top to bottom and write every chart and every number
 in this file.
